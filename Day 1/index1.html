@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Page Single File Studio</title>
+    <style>
+        /* ==========================================================================
+           GLOBAL VARIABLES & RESET
+           ========================================================================== */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-color: #333333;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+            --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--white);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ==========================================================================
+           SINGLE-PAGE ROUTING SYSTEM (CSS ONLY)
+           ========================================================================== */
+        /* Hide all page sections by default */
+        .page-section {
+            display: none;
+            flex: 1;
+        }
+
+        /* Show the Home page by default when no hash is present in the URL */
+        #home {
+            display: block;
+        }
+
+        /* If any page section is targeted via the URL hash, display it */
+        #home:target, #about:target, #services:target, #portfolio:target, #contact:target {
+            display: block;
+        }
+
+        /* Hide the default home page if another page section is targeted */
+        body:has(#about:target) #home,
+        body:has(#services:target) #home,
+        body:has(#portfolio:target) #home,
+        body:has(#contact:target) #home {
+            display: none;
+        }
+
+        /* ==========================================================================
+           NAVIGATION & HEADER
+           ========================================================================== */
+        header {
+            background-color: var(--primary-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .logo a {
+            color: var(--white);
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--white);
+        }
+
+        /* Dynamic active states mapped to the URL targets */
+        body:not(:has(:target)) nav ul li a[href="#home"],
+        body:has(#home:target) nav ul li a[href="#home"],
+        body:has(#about:target) nav ul li a[href="#about"],
+        body:has(#services:target) nav ul li a[href="#services"],
+        body:has(#portfolio:target) nav ul li a[href="#portfolio"],
+        body:has(#contact:target) nav ul li a[href="#contact"] {
+            color: var(--white);
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        /* ==========================================================================
+           PAGE LAYOUTS & COMPONENTS
+           ========================================================================== */
+        .section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('https://picsum.photos') no-repeat center center/cover;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            padding: 0 20px;
+        }
+
+        .hero-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--white);
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Grid Layouts */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background-color: var(--bg-light);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .card h3 {
+            margin: 15px 0;
+            color: var(--primary-color);
+        }
+
+        /* Portfolio Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Contact Form */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-group input, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           FOOTER
+           ========================================================================== */
+        footer {
+            margin-top: auto;
+            background-color: var(--primary-color);
+            color: #bdc3c7;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            border-top: 3px solid var(--secondary-color);
+        }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN
+           ========================================================================== */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            nav ul {
+                margin-top: 15px;
+            }
+            .hero-content h1 {
+                font-size: 32px;
+            }
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo"><a href="#home">STUDIO.</a></div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- PAGE 1: HOME -->
+    <section id="home" class="page-section">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Modern Web Experiences</h1>
+                <p>We craft high-performance websites and distinct visual styles tailored to scale your brand.</p>
+                <a href="#portfolio" class="btn">View Our Work</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 style="text-align: center; font-size: 32px;">Why Partner With Us?</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Innovative Strategy</h3>
+                    <p>We blend analytical market insights with modern interface layouts to ensure business longevity.</p>
+                </div>
+                <div class="card">
+                    <h3>Clean Execution</h3>
+                    <p>Writing highly accessible, search-engine-optimized source architectures using CSS Grid and Flexbox.</p>
+                </div>
+                <div class="card">
+                    <h3>Dedicated Support</h3>
+                    <p>From initial design structures through global cloud deployment, our engineers manage it all.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 2: ABOUT -->
+    <section id="about" class="page-section">
+        <div class="section">

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Form Controls</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <form action="/preference" method="post">
+            <label for="fullname">Full Name</label>
+            <input type="text" name="fullname" id="fullName" minlength="2" maxlength="60" placeholder="Enter Your Name" required>
+
+            <label for="email">Email</label>
+            <input type="text" name="fullname" id="fullName" minlength="2" maxlength="60" placeholder="Enter Your Email" required>
+            
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" minlength="8" placeholder="Enter Your Password" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" name="phone" id="phone" pattern="[0-9]{10}"  placeholder="Enter a 10-digit phone number" required>
+
+            <label for="dob">Date of Birth</label>
+            <input type="date" name="dob" id="dob"  placeholder="Enter Your DOB" required>
+
+            <label for="course">Preferred Course</label>
+            <select name="course" id="course" required>
+                <option value="">Choose a course</option>
+                <option value="html">HTML $amp; CSS</option>
+                <option value="js">JavaScript</option>
+                <option value="frontend">Frontend Development</option>
+            </select>
+
+            <label for="bio">About You</label>
+            <textarea name="bio" id="bio" row="4" maxlength="300" placeholder="Tell us about yourself"></textarea>
+
+            <label for="resume">Resume (PDF)</label>
+            <input type="file" name="resume" id="resume" accept=".pdf,application/pdf">
+            <fieldset>
+                <legend>Terms and Conditions</legend>
+                <legend>Select Your Skills</legend>
+              <label for="skill-html">
+                <input type="checkbox" name="skills" id="skill-html" value="html">
+              </label>
+              <label for="skill-css">
+                <input type="checkbox" name="skills" id="skill-css" value="css">
+              </label>
+              <label for="skill-js">
+                <input type="checkbox" name="skills" id="skill-js" value="javascript">
+              </label>
+            </fieldset>
+            <fieldset>
+                <legend>Experience Level</legend>
+                <label for="level-beginner">
+                    <input type="radio" name="level" id="level-beginner" value="beginner">
+                </label>
+
+                <label for="level-intermediate">
+                    <input type="radio" name="level" id="level-intermediate" value="intermediate">
+                </label>
+
+                <label for="level-advanced">
+                    <input type="radio" name="level" id="level-advanced" name="level" value="advanced">
+                </label>
+            </fieldset>
+
+            <button type="submit">Create Account</button>
+
+            <button type="reset">Clear Form</button>
+
+        </form>
+    </main>
+</body>
+</html>
